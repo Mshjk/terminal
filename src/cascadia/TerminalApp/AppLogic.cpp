@@ -16,6 +16,7 @@ using namespace winrt::Windows::UI::Core;
 using namespace winrt::Windows::System;
 using namespace winrt::Microsoft::Terminal;
 using namespace winrt::Microsoft::Terminal::TerminalControl;
+using namespace winrt::Microsoft::Terminal::Settings::Model;
 using namespace ::TerminalApp;
 
 namespace winrt
@@ -29,7 +30,7 @@ static const winrt::hstring StartupTaskName = L"StartTerminalOnLoginTask";
 // !!! IMPORTANT !!!
 // Make sure that these keys are in the same order as the
 // SettingsLoadWarnings/Errors enum is!
-static const std::array<std::wstring_view, static_cast<uint32_t>(winrt::TerminalApp::SettingsLoadWarnings::WARNINGS_SIZE)> settingsLoadWarningsLabels {
+static const std::array<std::wstring_view, static_cast<uint32_t>(SettingsLoadWarnings::WARNINGS_SIZE)> settingsLoadWarningsLabels {
     USES_RESOURCE(L"MissingDefaultProfileText"),
     USES_RESOURCE(L"DuplicateProfileText"),
     USES_RESOURCE(L"UnknownColorSchemeText"),
@@ -41,7 +42,7 @@ static const std::array<std::wstring_view, static_cast<uint32_t>(winrt::Terminal
     USES_RESOURCE(L"LegacyGlobalsProperty"),
     USES_RESOURCE(L"FailedToParseCommandJson")
 };
-static const std::array<std::wstring_view, static_cast<uint32_t>(winrt::TerminalApp::SettingsLoadErrors::ERRORS_SIZE)> settingsLoadErrorsLabels {
+static const std::array<std::wstring_view, static_cast<uint32_t>(SettingsLoadErrors::ERRORS_SIZE)> settingsLoadErrorsLabels {
     USES_RESOURCE(L"NoProfilesText"),
     USES_RESOURCE(L"AllProfilesHiddenText")
 };
@@ -76,7 +77,7 @@ static winrt::hstring _GetMessageText(uint32_t index, std::array<std::wstring_vi
 // - warning: the SettingsLoadWarnings value to get the localized text for.
 // Return Value:
 // - localized text for the given warning
-static winrt::hstring _GetWarningText(winrt::TerminalApp::SettingsLoadWarnings warning)
+static winrt::hstring _GetWarningText(SettingsLoadWarnings warning)
 {
     return _GetMessageText(static_cast<uint32_t>(warning), settingsLoadWarningsLabels);
 }
@@ -89,7 +90,7 @@ static winrt::hstring _GetWarningText(winrt::TerminalApp::SettingsLoadWarnings w
 // - error: the SettingsLoadErrors value to get the localized text for.
 // Return Value:
 // - localized text for the given error
-static winrt::hstring _GetErrorText(winrt::TerminalApp::SettingsLoadErrors error)
+static winrt::hstring _GetErrorText(SettingsLoadErrors error)
 {
     return _GetMessageText(static_cast<uint32_t>(error), settingsLoadErrorsLabels);
 }
@@ -169,7 +170,7 @@ namespace winrt::TerminalApp::implementation
     // - Returns the settings currently in use by the entire Terminal application.
     // Throws:
     // - HR E_INVALIDARG if the app isn't up and running.
-    const TerminalApp::CascadiaSettings AppLogic::CurrentAppSettings()
+    const CascadiaSettings AppLogic::CurrentAppSettings()
     {
         auto appLogic{ ::winrt::TerminalApp::implementation::AppLogic::Current() };
         THROW_HR_IF_NULL(E_INVALIDARG, appLogic);
@@ -870,7 +871,7 @@ namespace winrt::TerminalApp::implementation
 
     // Method Description:
     // - Returns a pointer to the global shared settings.
-    [[nodiscard]] TerminalApp::CascadiaSettings AppLogic::GetSettings() const noexcept
+    [[nodiscard]] CascadiaSettings AppLogic::GetSettings() const noexcept
     {
         return _settings;
     }
